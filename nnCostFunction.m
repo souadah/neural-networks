@@ -62,6 +62,7 @@ Theta2_grad = zeros(size(Theta2));
 %               and Theta2_grad from Part 2.
 %
 
+% Part 1: Feedforward
 % Feedforward neural network 
 a1 = [ones(m,1) X];
 a2 = [ones(m,1) sigmoid(a1 * Theta1')];
@@ -81,11 +82,26 @@ J = J + lambda / (2 * m) * ( sum(dot(Theta1(:,2:end), Theta1(:,2:end))) + ...
     sum(dot(Theta2(:,2:end), Theta2(:,2:end))) );
 
 
+% Part 2: Backpropagation
+% Loop over each training example
+for t = 1:m
+    % Feedforward
+    a1 = [1; X(t,:)'];
+    z2 = Theta1 * a1; a2 = [1; sigmoid(z2)];
+    z3 = Theta2 * a2; a3 = sigmoid(z3);
+    
+    % Compute errors
+    delta3 = a3 - yVect(t,:)';
+    delta2 = (Theta2' * delta3) .* [0; sigmoidGradient(z2)];
+    
+    % Accumulate the error
+    Theta2_grad = Theta2_grad + delta3 * a2';
+    Theta1_grad = Theta1_grad + delta2(2:end) * a1';
+end
 
-
-
-
-
+% Obtain the unregularized gradient
+Theta1_grad = 1 / m * Theta1_grad;
+Theta2_grad = 1 / m * Theta2_grad;
 
 % -------------------------------------------------------------
 
