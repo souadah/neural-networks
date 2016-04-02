@@ -73,11 +73,12 @@ for i = 1:m
     yVect(i,y(i)) = 1;
 end
 
-% Return the cost
+% Compute the cost
 J = (1 / m) * sum( sum( (-yVect .* log(a3)) - (1 - yVect) .* log(1 - a3) ) );
 
-
-
+% Compute the cost with regularization
+J = J + lambda / (2 * m) * ( sum(dot(Theta1(:,2:end), Theta1(:,2:end))) + ...
+    sum(dot(Theta2(:,2:end), Theta2(:,2:end))) );
 
 
 
