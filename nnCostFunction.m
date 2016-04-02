@@ -62,13 +62,19 @@ Theta2_grad = zeros(size(Theta2));
 %               and Theta2_grad from Part 2.
 %
 
+% Feedforward neural network 
+a1 = [ones(m,1) X];
+a2 = [ones(m,1) sigmoid(a1 * Theta1')];
+a3 = sigmoid(a2 * Theta2');
 
+% Transform y to be compatible
+yVect = zeros(m, num_labels);
+for i = 1:m
+    yVect(i,y(i)) = 1;
+end
 
-
-
-
-
-
+% Return the cost
+J = (1 / m) * sum( sum( (-yVect .* log(a3)) - (1 - yVect) .* log(1 - a3) ) );
 
 
 
